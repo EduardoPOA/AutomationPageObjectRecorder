@@ -1,0 +1,120 @@
+﻿@using AutomationPageRecorder.UI;
+@using AutomationPageRecorder.UI.CodeGeneration
+
+@functions{ string GetCSharpBy(string howFromCypress)
+    {
+        switch (howFromCypress)
+        {
+            case "css":
+            case "xpath":
+                return howFromCypress;
+            default:
+                return "LOCATOR PARSE ERROR";
+        }
+    }
+
+    string QuoteLocator(string locator)
+    {
+        locator = locator.Replace("\\", "").Replace("\"", "'").Replace("''", "'").Trim('\'');
+        locator = locator.Replace("{", "{{");
+        locator = locator.Replace("}", "}}");
+        locator = locator.Replace("/\" /> ", "\" /> ").Trim();
+        return locator;
+    }
+    string RenameMethod(string typeElement)
+    {
+        string getValue = null;
+        typeElement = typeElement.ToLower();
+        getValue = typeElement.Contains("btn") || typeElement.Contains("button") || typeElement.Contains("botao")
+          || typeElement.Contains("check") || typeElement.Contains("radio") || typeElement.Contains("radiobutton") || typeElement.Contains("checkbox") ? "clickOn" :
+      typeElement.Contains("txt") || typeElement.Contains("text") || typeElement.Contains("txtbox") || typeElement.Contains("textbox") || typeElement.Contains("caixa") || typeElement.Contains("input") ? "sendStringOn" :
+      typeElement.Contains("label") ? "validateStringOn" : typeElement.Contains("table") || typeElement.Contains("tr") || typeElement.Contains("td") ? "validateListOn" :
+      typeElement.Contains("select") || typeElement.Contains("selectbox") || typeElement.Contains("selectcombobox") || typeElement.Contains("dropbox") || typeElement.Contains("drop") || typeElement.Contains("combobox") ? "selectOn" :
+      typeElement.StartsWith("validate") ? "Custom" : "Custom";
+        getValue = char.ToUpper(getValue[0]) + getValue.Substring(1);
+        typeElement = typeElement.Substring(typeElement.LastIndexOf('.') + 1);
+        typeElement = char.ToUpper(typeElement[0]) + typeElement.Substring(1);
+        return getValue + typeElement;
+    }}
+
+@foreach (var element in @Model.PageObject.Items)
+{
+ 
+ if(QuoteLocator(@element.Locator).StartsWith("/html"))
+{
+<text>
+<element key="@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)" value="" baseValue="@Raw(@QuoteLocator(@element.Locator))"/>
+</text>
+}
+ if(!QuoteLocator(@element.Locator).StartsWith("/html"))
+{
+<text>
+<element key="@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)" value="@Raw(@QuoteLocator(@element.Locator))" baseValue=""/>
+</text>
+}
+ if (RenameMethod(@element.Name).StartsWith("ClickOn"))
+{
+<text>
+it('Click on the button with name ?', () => {
+     cy.wait(2000);
+     cy.ClickOnTheElement("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)");
+     cy.DoubleClickOnTheElement("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)");
+     cy.MouseMoveTheElement("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)");
+     cy.ClickOnTheSubMenu("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)","text");
+     cy.ValidateElementPass("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)");
+     cy.ContainsAndClick("text");
+})
+</text>
+}
+  else if (RenameMethod(@element.Name).StartsWith("SendStringOn"))
+{
+<text>
+it('Send key ? in textbox', () => {
+    cy.wait(2000);
+    cy.SendKeyToElement("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)", "text");
+    cy.SendKeyToElementKeyEnter("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)", "text");
+    cy.SendKeyToElementKeyEsc("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)", "text");
+    cy.SendKeyToElementKeyTab("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)", "text");
+    cy.ValidateElementPass("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)");
+})
+</text>
+}
+  else if (RenameMethod(@element.Name).StartsWith("SelectOn"))
+{
+<text>
+it('Select item name ? in selectbox', () => {
+    cy.wait(2000);
+    cy.ClickOnTheElement("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)");
+    cy.SelectTextOnTheForm("text");
+    cy.SelectPositionOnTheForm(index);
+    cy.ValidateElementPass("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)");
+    cy.ValidateElementValueTextEquals("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)","text");
+    cy.ValidateElementValueTextContains("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)","text");
+    cy.ClickOut();
+})
+</text>
+}
+  else if (RenameMethod(@element.Name).StartsWith("ValidateStringOn"))
+{
+<text>
+it('Validate label with name ?', () => {
+    cy.wait(2000);
+    cy.ValidateElementPass("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)");
+    cy.ValidateElementInnerTextEquals("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)","text");
+    cy.ValidateElementInnerTextContains("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)","text");
+})
+</text>
+}
+  else if (RenameMethod(@element.Name).StartsWith("ValidateListOn"))
+{
+<text>
+it('Select on the table the item with name ?', () => {
+    cy.wait(2000);
+    cy.FindThOnTheTable("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)","text");
+    cy.FindTrOnTheTable("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)","text");
+    cy.FindThAndCountColumnsOnTheTable("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)","number");
+    cy.FindTrAndCountRowsOnTheTable("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)","number");
+})
+</text>
+}
+}

@@ -1,0 +1,18 @@
+﻿{
+  "profile": {
+    "profileId": "Edge",
+    "displayName": "Edge",
+    "displayPriority": 1,
+    "canUseWithLocalWebdriver": true,
+    "canUseWithRemoteWebdriver": true
+  },
+  "activation": {
+    "browserName": "Edge"
+  },
+  "capabilities": {
+    "remoteWebDriver": [
+      // [ "capName", "capValue" ]
+
+    ]
+  }
+}

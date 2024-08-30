@@ -1,0 +1,157 @@
+﻿@using AutomationPageRecorder.UI;
+@using AutomationPageRecorder.UI.CodeGeneration
+
+@functions{ string GetCSharpBy(string howFromCSharp)
+    {
+        switch (howFromCSharp)
+        {
+            case "id":
+            case "name":
+            case "tag":
+            case "classname":
+            case "css":
+            case "link":
+            case "partiallink":
+            case "xpath": return howFromCSharp;
+            default: return "LOCATOR PARSE ERROR";
+        }
+    }
+
+    string QuoteLocator(string locator)
+    {
+        locator = locator.Replace("\\", "").Replace("\"", "'").Replace("''", "'").Trim('\'');
+        locator = locator.Replace("{", "{{");
+        locator = locator.Replace("}", "}}");
+        locator = locator.Replace("/\" /> ", "\" /> ").Trim();
+        return locator;
+    }
+    string RenameMethod(string typeElement)
+    {
+        string getValue = null;
+        typeElement = typeElement.ToLower();
+        getValue = typeElement.Contains("btn") || typeElement.Contains("button") || typeElement.Contains("botao")
+          || typeElement.Contains("check") || typeElement.Contains("checkbox") ? "clickOn" :
+      typeElement.Contains("txt") || typeElement.Contains("text") || typeElement.Contains("txtbox") || typeElement.Contains("textbox") || typeElement.Contains("caixa") || typeElement.Contains("input") ? "sendStringOn" :
+      typeElement.Contains("label") ? "validateStringOn" : typeElement.Contains("table") || typeElement.Contains("tr") || typeElement.Contains("td") ? "validateListOn" :
+      typeElement.Contains("select") || typeElement.Contains("selectbox") || typeElement.Contains("selectcombobox") || typeElement.Contains("combobox") ? "selectOn" :
+      typeElement.StartsWith("validate") ? "Custom" : "Custom";
+        getValue = char.ToUpper(getValue[0]) + getValue.Substring(1);
+        typeElement = typeElement.Substring(typeElement.LastIndexOf('.') + 1);
+        typeElement = char.ToUpper(typeElement[0]) + typeElement.Substring(1);
+        return getValue + typeElement;
+    }}
+
+@foreach (var element in @Model.PageObject.Items)
+{
+<text>
+<element key="@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)" by="@Raw(@GetCSharpBy(@element.How))" value="@Raw(@QuoteLocator(@element.Locator))" baseValue=""/>
+
+</text>
+  if (RenameMethod(@element.Name).StartsWith("ClickOn"))
+{
+<text>
+
+public bool "@RenameMethod(@element.Name)"()
+{
+     WaitElementToBeClickable("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)",10);
+     ValidateElementVisible("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)");
+     ScrollElement("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)");
+     ClickOnTheElement("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)");
+     return true;
+}
+    
+</text>
+}
+  else if (RenameMethod(@element.Name).StartsWith("SendStringOn"))
+{
+<text>
+
+public bool "@RenameMethod(@element.Name)"(string value)
+{
+    WaitElement("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)");
+    SendKeyToElement("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)", value);
+    SendSecretToElement("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)", "");
+    ValidateElementVisible("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)");
+    ValidateInnerTextEquals("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)", value);
+    ValidateValueTextEquals("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)", value);
+    ScrollElement("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)");
+    return true;
+}
+
+</text>
+}
+  else if (RenameMethod(@element.Name).StartsWith("SelectOn"))
+{
+<text>
+
+public bool "@RenameMethod(@element.Name)"(string value)
+{
+    WaitElement("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)");
+    ValidateElementVisible("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)");
+    ScrollElement("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)");
+    SelectComboBoxText("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)", value);
+    return true;
+}
+
+</text>
+}
+   else if (RenameMethod(@element.Name).StartsWith("ValidateStringOn"))
+{
+<text>
+
+public bool "@RenameMethod(@element.Name)"(string value)
+{
+    WaitElement("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)");
+    ValidateInnerTextEquals("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)", value);
+    return true;
+}
+
+</text>
+}
+   else if (RenameMethod(@element.Name).StartsWith("ValidateListOn"))
+{
+<text>
+
+public bool "@RenameMethod(@element.Name)"()
+{
+    WaitElement("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)");
+    IList<IWebElement> list = GetLocatorList("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)");
+    ValidateInnerTextEquals("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)", value);
+    return true;
+}
+
+</text>
+}
+       else if (RenameMethod(@element.Name).StartsWith("CustomMethodName"))
+{
+<text>
+
+public bool "@RenameMethod(@element.Name)"()
+{
+    WaitElement("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)");
+    ValidateElementVisible("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)");
+    ValidateInnerTextEquals("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)", value);
+    ValidateValueTextEquals("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)", value);
+    return true;
+}
+
+</text>
+}
+        else 
+{
+<text>
+
+public bool CustomNameMethod()
+{
+    WaitElement("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)");
+    ValidateElementVisible("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)");
+    ValidateInnerTextEquals("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)", value);
+    ValidateValueTextEquals("@Raw(@Model.PageObject.PageObjectName).@Raw(@element.Name)", value);
+    return true;
+}
+
+</text>
+}
+}
+
+>> Sobrescreva este comentário com seu story BDD <<

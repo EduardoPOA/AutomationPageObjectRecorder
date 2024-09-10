@@ -69,7 +69,7 @@
         return selector;
     };
 
-    getCssSelectorOF = function(element) {
+    getCssSelectorOF = function (element) {
         hello('getCssSelectorOF');
         if (!(element instanceof Element))
             return;
@@ -102,40 +102,39 @@
     };
 
     //getCssSelectorOF = function (element) {
-    //    hello('getCssSelectorOF');
-    //    if (!(element instanceof Element))
-    //        return;
-    //    bye('getCssSelectorOF');
-    //    return `${element.nodeName.toLowerCase()}${element.id.toLowerCase() ? '#' + element.id.toLowerCase() : ''}${element.getAttribute('class').toLowerCase() ? '.' + element.getAttribute('class').toLowerCase().split(' ').join('.') : ''}`;
+    //    hello("getCssSelectorOF");
+
+    //    const tagName = element.tagName.toLowerCase();
+    //    const className = element.className.trim().split(/\s+/).map(c => `.${c}`).join('');
+
+    //    // A função agora inclui apenas tag e classes
+    //    const selector = `${tagName}${className}`;
+
+    //    bye("getCssSelectorOF");
+    //    return selector;
     //};
 
-    
-
-    getPathTo = function(element) {
-        var element_sibling, siblingTagName, siblings, cnt, sibling_count;
-
+    getPathTo = function (element) {
         hello("getPathTo");
-        var elementTagName = element.tagName.toLowerCase();
-        if (element === document.body) {
-            return '/html/' + elementTagName;
+        let tagName = element.tagName.toLowerCase();
+        let attributes = [];
+        if (element.id) {
+            attributes.push(`@id="${element.id}"`);
+        } else if (element.name) {
+            attributes.push(`@name="${element.name}"`);
+        } else if (element.className) {
+            let classList = element.className.trim().split(/\s+/).slice(0, 2).join(' ');
+            attributes.push(`contains(@class, "${classList}")`);
         }
-        sibling_count = 0;
-        siblings = element.parentNode.childNodes;
-        siblings_length = siblings.length;
-        for (cnt = 0; cnt < siblings_length; cnt++) {
-            var element_sibling = siblings[cnt];
-            if (element_sibling.nodeType !== ELEMENT_NODE) { // not ELEMENT_NODE
-                continue;
-            }
-            if (element_sibling === element) {
-                return getPathTo(element.parentNode) + '/' + elementTagName + '[' + (sibling_count + 1) + ']';
-            }
-            if (element_sibling.nodeType === 1 && element_sibling.tagName.toLowerCase() === elementTagName) {
-                sibling_count++;
-            }
+        if (element.textContent.trim().length > 0 && element.textContent.trim().length < 30) {
+            attributes.push(`text()="${element.textContent.trim()}"`);
         }
-        return bye("getPathTo");
-    };
+        let attributeString = attributes.length ? `[${attributes.join(' and ')}]` : '';
+        let xpath = `//${tagName}${attributeString}`;
+
+        bye("getPathTo");
+        return xpath;
+    }
 
     //getPathTo = function (element) {
     //    var element_sibling, siblingTagName, siblings, cnt, sibling_count;

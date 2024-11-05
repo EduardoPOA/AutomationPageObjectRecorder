@@ -324,7 +324,7 @@ namespace AutomationPageRecorder.UI
             XDocument xdoc = XDocument.Load(getCsproj);
             xdoc.Descendants("PackageReference")
                 .Where(x => x.Attribute("Include") != null)
-                .Where(x => x.Attribute("Include").Value.Equals("Super_Automation"))
+                .Where(x => x.Attribute("Include").Value.Equals("Super_Automation_Sikuli"))
                 .ToList()
                 .ForEach(x => x.Remove());
             xdoc.Save(getCsproj);
@@ -341,7 +341,7 @@ namespace AutomationPageRecorder.UI
                 plugins.Add("NUnit");
                 plugins.Add("NUnit3TestAdapter");
                 plugins.Add("ExtentReports");
-                plugins.Add("Super_Automation");
+                plugins.Add("Super_Automation_Sikuli");
                 plugins.Add("MSTest.TestAdapter");
                 plugins.Add("Microsoft.NET.Test.Sdk");
                 plugins.Add("Specflow");

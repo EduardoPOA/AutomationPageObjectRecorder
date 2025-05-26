@@ -272,7 +272,7 @@ namespace AutomationPageRecorder.UI
                             using (FileStream fs = File.Create(hookClass)) ;
                             using (StreamWriter wt = new StreamWriter(hookClass))
                             {
-                                wt.WriteLine("using Hook_Validator;\nusing System;\nusing System.Collections.Generic;\nusing System.Text;\nusing TechTalk.SpecFlow;\n\n" +
+                                wt.WriteLine("using Hook_Validator;\nusing System;\nusing System.Collections.Generic;\nusing System.Text;\nusing Reqnroll;\n\n" +
                                     "namespace " + splitingNameSpace + "." + splitingNameFolder + "\n{\n    [Binding]\n    class Hooks\n    {\n\n        [BeforeTestRun]\n        public static void BeforeTestRun()\n        {\n            //Inserir o caminho da saída do relatório e screenshot\n" +
                                     "            Hook.BeforeTestRun(@" + getReport + ", @" + getLocators + ");\n        }\n\n        [BeforeFeature]\n        public static void BeforeFeature()\n" +
                                     "        {\n            Hook.BeforeFeature();\n        }\n\n        [BeforeScenario]\n        public static void BeforeScenario()\n" +
@@ -302,7 +302,7 @@ namespace AutomationPageRecorder.UI
                             using (FileStream fs = File.Create(getStepCs)) ;
                             using (StreamWriter wt = new StreamWriter(getStepCs))
                             {
-                                wt.WriteLine("using TechTalk.SpecFlow;\nusing NUnit.Framework;\nusing " + splitingNameSpace + "." + "" + splitingNamePage + ";\n\n" +
+                                wt.WriteLine("using Reqnroll;\nusing NUnit.Framework;\nusing " + splitingNameSpace + "." + "" + splitingNamePage + ";\n\n" +
                                     "namespace " + splitingNameSpace + "." + splitingNameFolder + " \n{\n    [Binding]" +
                                         "\n    class " + nameFeature + "_step : " + splitingPageName + "\n    {\n    }\n}");
                                 wt.Close();

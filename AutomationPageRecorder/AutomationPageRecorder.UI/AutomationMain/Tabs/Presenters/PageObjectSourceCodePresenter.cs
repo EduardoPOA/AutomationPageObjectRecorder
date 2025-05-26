@@ -344,9 +344,9 @@ namespace AutomationPageRecorder.UI
                 plugins.Add("Super_Automation_Sikuli");
                 plugins.Add("MSTest.TestAdapter");
                 plugins.Add("Microsoft.NET.Test.Sdk");
-                plugins.Add("Specflow");
-                plugins.Add("SpecFlow.NUnit");
-                plugins.Add("SpecFlow.Tools.MsBuild.Generation");
+                plugins.Add("Reqnroll");
+                plugins.Add("Reqnroll.NUnit");
+                plugins.Add("Reqnroll.Tools.MsBuild.Generation");
                 plugins.Add("DotNetSeleniumExtras.WaitHelpers");
                 foreach (string item in plugins)
                 {

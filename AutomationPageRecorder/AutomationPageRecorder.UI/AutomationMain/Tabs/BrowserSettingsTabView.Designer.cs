@@ -49,6 +49,8 @@
             this.chkMaximizeBrowserWindow = new System.Windows.Forms.CheckBox();
             this.chkUseRemoteHub = new System.Windows.Forms.CheckBox();
             this.chkMFA = new System.Windows.Forms.CheckBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
@@ -120,7 +122,7 @@
             // 
             // txtRemoteHubUrl
             // 
-            this.txtRemoteHubUrl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtRemoteHubUrl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtRemoteHubUrl.Location = new System.Drawing.Point(69, 28);
             this.txtRemoteHubUrl.Name = "txtRemoteHubUrl";
@@ -164,8 +166,8 @@
             // 
             // grdDesiredCapabilities
             // 
-            this.grdDesiredCapabilities.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.grdDesiredCapabilities.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grdDesiredCapabilities.Location = new System.Drawing.Point(0, 49);
             this.grdDesiredCapabilities.Name = "grdDesiredCapabilities";
@@ -190,7 +192,7 @@
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.label4.Location = new System.Drawing.Point(54, 207);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(900, 17);
+            this.label4.Size = new System.Drawing.Size(1055, 17);
             this.label4.TabIndex = 12;
             this.label4.Text = "Nota: A opção MFA ativada só será válido quando realizar primeiro login com MFA, " +
     "e então não precisará mais realizar e ficará salvo em cache.";
@@ -212,7 +214,7 @@
             this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.label5.Location = new System.Drawing.Point(97, 233);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(239, 17);
+            this.label5.Size = new System.Drawing.Size(244, 17);
             this.label5.TabIndex = 14;
             this.label5.Text = "Só funciona no Chrome browser.";
             // 
@@ -258,9 +260,32 @@
             this.chkMFA.Text = "Ativar Microsoft MFA ";
             this.chkMFA.UseVisualStyleBackColor = true;
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(10, 342);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(187, 17);
+            this.label6.TabIndex = 18;
+            this.label6.Text = "Desktop Inspect Invoker:";
+            // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(203, 339);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(121, 23);
+            this.button1.TabIndex = 19;
+            this.button1.Text = "Iniciar_Inspect";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.btnStartInspectDesktop_Click);
+            // 
             // BrowserSettingsTabView
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.chkMFA);
             this.Controls.Add(this.chkMaximizeBrowserWindow);
             this.Controls.Add(this.lnkSeleniumDownloadPage);
@@ -301,5 +326,7 @@
         private System.Windows.Forms.CheckBox chkMaximizeBrowserWindow;
         public System.Windows.Forms.CheckBox chkUseRemoteHub;
         private System.Windows.Forms.CheckBox chkMFA;
+        public System.Windows.Forms.Label label6;
+        public System.Windows.Forms.Button button1;
     }
 }

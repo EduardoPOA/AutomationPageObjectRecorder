@@ -116,6 +116,8 @@
       <HintPath>..\packages\NLog.4.4.5\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="RazorEngine, Version=3.6.1.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\RazorEngine.3.6.1\lib\net45\RazorEngine.dll</HintPath>
@@ -175,6 +177,7 @@
     <Reference Include="WebDriverManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WebDriverManager.2.17.1\lib\net462\WebDriverManager.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeGeneration\ExternalGenerator.cs" />
@@ -305,6 +308,10 @@
       <Project>{29848a98-3381-4d64-a613-d3b73adaa4fa}</Project>
       <Name>AutomationPageRecorder.ConfigurationManagement</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AutomationPageRecorder.InspectDesktop\AutomationPageRecorder.InspectDesktop.csproj">
+      <Project>{4b4bfe40-c691-442d-b460-b40c9021501b}</Project>
+      <Name>AutomationPageRecorder.InspectDesktop</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AutomationPageRecorder.WebDriver\AutomationPageRecorder.WebDriver.csproj">
       <Project>{dc2ec3c9-dc4f-430a-bba7-7f04b9c215eb}</Project>
       <Name>AutomationPageRecorder.WebDriver</Name>
@@ -351,7 +358,6 @@
     </Content>
     <None Include="Resources\loading-indicator.gif" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <PropertyGroup>

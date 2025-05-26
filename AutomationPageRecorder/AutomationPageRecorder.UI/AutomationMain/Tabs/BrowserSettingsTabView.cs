@@ -12,6 +12,7 @@ using OpenQA.Selenium.Remote;
 
 using FormKeys = System.Windows.Forms.Keys;
 using AutomationPageRecorder.ConfigurationManagement.Profiles;
+using AutomationPageRecorder.InspectDesktop;
 using System.Reflection;
 using System.IO;
 using Ionic.Zip;
@@ -19,6 +20,7 @@ using OpenQA.Selenium.Chrome;
 using Microsoft.Win32;
 using System.Diagnostics;
 using System.Net;
+using FluentAssertions.Execution;
 
 namespace AutomationPageRecorder.UI
 {
@@ -58,6 +60,12 @@ namespace AutomationPageRecorder.UI
             Presenter.StartNewBrowser(browserOptions, startSeleniumServerIfNotStarted, shouldMaximizeBrowserWindow);
       
         }
+
+        private void btnStartInspectDesktop_Click(object sender, EventArgs e)
+        {
+            Program.Main();
+        }
+
 
         private void HandleRemoteDriverSettingsEnabledStatus()
         {
